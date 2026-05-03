@@ -59,8 +59,7 @@ async function main() {
 
 
 const store = MongoStore.create({
-    mongoUrl:dburl,
-    crypto:{secret:process.env.SECRET},
+    mongoUrl: dburl,
     touchAfter: 24 * 3600
 })
 
