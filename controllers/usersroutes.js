@@ -47,7 +47,7 @@ module.exports.postlogin = async(req,res)=>{
 module.exports.logoutroute = (req,res,next)=>{
     req.logout((err)=>{
         if(err){
-            next(err);
+            return next(err);
         }
         req.flash("success","You Logged out succesfully");
         res.redirect("/listings");

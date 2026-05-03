@@ -1,6 +1,7 @@
 const review = require("../models/review.js");
 const listing = require("../models/listing.js");
 const { reviewschema } = require("../schema.js");
+const expresserror = require("../utils/expresserror.js");
 
 // CREATE ROUTE
 
@@ -25,7 +26,7 @@ module.exports.postroute = async (req, res, next) => {
     req.flash("success","Review created succesfully");
 
     console.log("saved in the database");
-    res.redirect(`/listings/${req.params.id}`);
+    return res.redirect(`/listings/${req.params.id}`);
 }
 
 // DESTROY ROUTE

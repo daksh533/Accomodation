@@ -6,6 +6,11 @@ const usercontroller = require("../controllers/usersroutes.js")
 const passport = require("passport");
 const {saveredirecturl} = require("../middleware.js");
 
+// ROOT REDIRECT
+router.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 router.route("/signup")
 .get(usercontroller.showsignupform)
 .post(wrapasync(usercontroller.postsignup));
