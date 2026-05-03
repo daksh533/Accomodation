@@ -22,6 +22,10 @@ module.exports.saveredirecturl = (req,res,next)=>{
 
 module.exports.isowner = async(req,res,next)=>{
     let { id } = req.params;
+    if(!res.locals.curruser){
+        req.flash("error","you must be logged in");
+        return res.redirect("/login");
+    }
     let Listing = await listing.findById(id);
     if(!Listing.owner.equals(res.locals.curruser._id)){
         req.flash("error","you dont have permission to do this task");
@@ -33,6 +37,10 @@ module.exports.isowner = async(req,res,next)=>{
 
 module.exports.isauthor = async(req,res,next)=>{
     let { id, reviewid } = req.params;
+    if(!res.locals.curruser){
+        req.flash("error","you must be logged in");
+        return res.redirect("/login");
+    }
     let Revie = await review.findById(reviewid);
     if(!Revie.author.equals(res.locals.curruser._id)){
         req.flash("error","you dont have permission to do this");

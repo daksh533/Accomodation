@@ -32,7 +32,6 @@ const users = require("./routes/userroute.js");
 main().then(() => console.log("Connected to database")).catch(err => console.log(err));
 
 async function main() {
-    const mongourl = 'mongodb://127.0.0.1:27017/accomodation';
     await mongoose.connect(dburl);
 }
 
@@ -55,7 +54,7 @@ const store = MongoStore.create({
     touchAfter: 24 * 3600
 })
 
-store.on("error",()=>{
+store.on("error",(err)=>{
     console.log("Error in mongo session store",err)
 })
 

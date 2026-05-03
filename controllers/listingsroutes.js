@@ -51,15 +51,19 @@ module.exports.postlisting = async (req, res, next) => {
         return res.redirect("/listings/new"); // Redirect to form
     }
     
-    const { path: url, filename } = req.file; // Destructure uploaded file details
+    if (!req.file) {
+        req.flash("error", "Please upload an image");
+        return res.redirect("/listings/new");
+    }
+
+    const { path: url, filename } = req.file;
     const newlisting = new listing(req.body.listing);
 
     try {
         newlisting.owner = req.user._id;
         newlisting.image = { url, filename };
         newlisting.Geometry = result.body.features[0].geometry;
-        let savedlist=  await newlisting.save();
-        console.log(savedlist);
+        await newlisting.save();
 
         req.flash("success", "Listing created successfully");
         return res.redirect("/listings");
@@ -88,17 +92,21 @@ module.exports.editroute = async (req, res, next) => {
 // UPDATE ROUTE
 module.exports.updateroute = async (req, res, next) => {
     const { id } = req.params;
-    const data = req.body;
-    const updatedListing = await listing.findByIdAndUpdate(id, { ...data });
-    if(typeof req.file !== "undefined"){
-         let url = req.file.path;
-    let filename = req.file.filename;
-    updatedListing.image = {url,filename};
-     await updatedListing.save();
-    }
+    const { title, description, price, location, country } = req.body;
+
+    const updatedListing = await listing.findByIdAndUpdate(
+        id,
+        { title, description, price, location, country },
+        { new: true }
+    );
 
     if (!updatedListing) {
         return next(new expresserror("Listing not found", 404));
+    }
+
+    if (req.file) {
+        updatedListing.image = { url: req.file.path, filename: req.file.filename };
+        await updatedListing.save();
     }
 
     req.flash("success", "Listing updated successfully");
