@@ -4,12 +4,12 @@ const user = require("../models/user.js")
 // SINGUP FORM
 
 module.exports.showsignupform = (req,res)=>{
-    res.render("../views/users/signup.ejs");
+    res.render("users/signup.ejs");
 }
 
 // REGISTERING USER
 
-module.exports.postsignup = async(req,res)=>{
+module.exports.postsignup = async(req,res,next)=>{
     try{
          let {username,email,password} = req.body;
     const registeringuser = new user({email,username});
@@ -17,7 +17,7 @@ module.exports.postsignup = async(req,res)=>{
     console.log(registereduser);
      req.login(registereduser,(err)=>{
         if(err){
-            next(err);
+            return next(err);
         }
         req.flash("success","user registered succesfully");
     res.redirect("/listings")})
@@ -31,7 +31,7 @@ module.exports.postsignup = async(req,res)=>{
 // SHOW LOGIN FORM
 
 module.exports.showloginform = async(req,res)=>{
-    res.render("../views/users/login.ejs");
+    res.render("users/login.ejs");
 }
 
 // LOGIN USER

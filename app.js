@@ -105,20 +105,13 @@ app.use("/",users);
 
 
 
-app.use((err, req, res, next) => {
-    // if (res.headersSent) {
-    //     return next(err);
-    // }
-    // if (err.name === 'CastError') {
-    //     err.message = 'Not Found';
-    //     err.status = 400;
-    // }
-    let { message, status } = err;
-    res.render("listings/error.ejs",{message});
+app.all("*", (req, res) => {
+    res.status(404).send("The route you are requesting is not available");
 });
 
-app.all("*", (req, res) => {
-    res.send("The route you are requesting is not available");
+app.use((err, req, res, next) => {
+    let { message = "Something went wrong!", status = 500 } = err;
+    res.status(status).render("listings/error.ejs", { message });
 });
 
 app.listen(8080, () => {
