@@ -106,6 +106,9 @@ app.all("*", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
     let { message = "Something went wrong!", status = 500 } = err;
     res.status(status).render("listings/error.ejs", { message });
 });

@@ -15,15 +15,16 @@ module.exports.postsignup = async(req,res,next)=>{
     const registeringuser = new user({email,username});
    const registereduser =  await user.register(registeringuser,password);
     console.log(registereduser);
-     req.login(registereduser,(err)=>{
+    req.login(registereduser,(err)=>{
         if(err){
             return next(err);
         }
         req.flash("success","user registered succesfully");
-    res.redirect("/listings")})
+        return res.redirect("/listings");
+    })
     }catch(e){
         req.flash("error","given username is already registered try another one");
-        res.redirect("/signup");
+        return res.redirect("/signup");
     }
    
 }
