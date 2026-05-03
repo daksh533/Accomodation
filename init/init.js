@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const indata = require("./data.js");
 const listing = require("../models/listing.js");
-
-
 const mongourl = 'mongodb://127.0.0.1:27017/accomodation';
+
+
+
 
 async function main(){
     await mongoose.connect(mongourl);

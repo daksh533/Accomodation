@@ -36,10 +36,7 @@ async function main() {
     await mongoose.connect(dburl);
 }
 
-app.get("/", (req, res) => {
-    res.redirect("/listings");
-    res.send("Hi! I am Root");
-});
+
 
 // app.get("/demouser",async(req,res)=>{
 //     const demouser = new user({
@@ -92,6 +89,10 @@ app.use((req,res,next)=>{
      
     next();
 })
+
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
