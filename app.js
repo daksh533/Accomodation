@@ -17,6 +17,16 @@ const MongoStore = require('connect-mongo');
 
 let dburl = process.env.DB_STRING;
 
+if (!dburl) {
+    console.error("FATAL: DB_STRING environment variable is not set.");
+    process.exit(1);
+}
+
+if (!process.env.SECRET) {
+    console.error("FATAL: SECRET environment variable is not set.");
+    process.exit(1);
+}
+
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride('_method'));
